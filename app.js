@@ -124,21 +124,21 @@ function act (){
         if(pressing[KEY_DOWN] && player.y+player.height<buffer.height){
         player.y = player.y+5;
         }
-        if( pressing[KEY_SPACE] && track > 20 )
+        if( pressing[KEY_SPACE] && track > 30 )
         {   if(multishot ===1){
             shot.push(new Rectangle(player.x+2,player.y,4,4,0));
-            lastPress=null;
+            //lastPress=null;
             track = 0;
             }else if(multishot ===2){
             shot.push(new Rectangle(player.x-1,player.y,4,4,0));
             shot.push(new Rectangle(player.x+8,player.y,4,4,0));
-            lastPress=null;
+            //lastPress=null;
             track = 0;
             }else if(multishot ===3){
                 shot.push(new Rectangle(player.x-3,player.y,4,4,0));
                 shot.push(new Rectangle(player.x+3,player.y,4,4,0));
                 shot.push(new Rectangle(player.x+9,player.y,4,4,0));
-                lastPress=null;
+                //lastPress=null;
                 track = 0;
             }
         }else{
@@ -165,6 +165,21 @@ function act (){
         }
         for(let l = 0;l<enemies.length;l++){
             enemies[l].y += 4;
+            if(enemies[l].move>=5){
+                enemies[l].x+=2;
+                enemies[l].move-=5;
+                if(enemies[l].move === 0){
+                    enemies[l].move=-30;
+                }
+            }else{ if(enemies[l].move<=5){
+                enemies[l].x-=2;
+                enemies[l].move+=5;
+                if(enemies[l].move === 0){
+                    enemies[l].move=30;
+                }
+            } 
+            }
+            
             if(enemies[l].timer >0){
                 enemies[l].timer--;
             }
@@ -265,6 +280,7 @@ function Rectangle(x,y,width,height,type,health){
     this.type = (type ===null)?1:type;
     this.health =(health===null)?1:health;
     this.timer = 0;
+    this.move = 30;
 }
 Rectangle.prototype.draw = function(ctx){ 
     ctx.fillRect(this.x,this.y,this.width,this.height);
